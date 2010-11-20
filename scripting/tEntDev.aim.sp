@@ -3,7 +3,7 @@
 #include <sdktools>
 #include <tentdev>
 
-#define VERSION 		"0.0.1"
+#define VERSION 		"0.0.2"
 
 
 public Plugin:myinfo =

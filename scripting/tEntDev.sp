@@ -3,7 +3,7 @@
 #include <sdktools>
 #include <colors>
 
-#define VERSION 		"0.0.1"
+#define VERSION 		"0.0.2"
 
 new Handle:g_hNetPropKV = INVALID_HANDLE;
 new String:g_sNetPropFile[PLATFORM_MAX_PATH];
