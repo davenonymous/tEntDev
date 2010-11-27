@@ -1,3 +1,4 @@
+//DontCompile:1
 #include <sourcemod>
 #include <netprops>
 
