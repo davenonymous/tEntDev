@@ -10,7 +10,6 @@ enum SendPropType {
 };
 
 native Handle:GetSendTableByNetclass(const String:netclass[]);
-native Handle:GetSendTableByEntity(iEntity);						//FIXME: this doesnt work for l4d2 atm.
 
 native GetNumProps(Handle:hSendTable);
 native Handle:GetProp(Handle:hSendTable, iIndex);
