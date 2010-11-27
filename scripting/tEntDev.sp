@@ -32,7 +32,6 @@ public OnPluginStart() {
 	g_hForwardShowMessage = CreateGlobalForward("TED_OnShow", ET_Ignore, Param_Cell, Param_String, Param_String, Param_Cell);
 	g_hForwardInfoMessage = CreateGlobalForward("TED_OnInfo", ET_Ignore, Param_Cell, Param_String);
 	g_hForwardNetpropMessage = CreateGlobalForward("TED_OnNetpropHint", ET_Ignore, Param_Cell, Param_String, Param_String);
-
 }
 
 public OnPlayerDisconnect(client) {
@@ -196,26 +195,24 @@ public Native_SelectEntity(Handle:hPlugin, iNumParams) {
 
 	g_bStopWatching[client] = true;
 
-	if(iEnt > 0) {
-		decl String:sNetclass[64];
-		if(GetEntityNetClass(iEnt, sNetclass, sizeof(sNetclass))) {
-			Call_StartForward(g_hForwardNetpropMessage);
-			Call_PushCell(client);
-			Call_PushString("You've marked:");
-			Call_PushString(sNetclass);
-			Call_Finish();
+	decl String:sNetclass[64];
+	if(GetEntityNetClass(iEnt, sNetclass, sizeof(sNetclass))) {
+		Call_StartForward(g_hForwardNetpropMessage);
+		Call_PushCell(client);
+		Call_PushString("You've marked:");
+		Call_PushString(sNetclass);
+		Call_Finish();
 
-			g_iMarkedEntity[client] = iEnt;
+		g_iMarkedEntity[client] = iEnt;
 
-			new Handle:hSendTable = GetSendTableByNetclass(sNetclass);
-			ClearKeyValues(g_hNetprops[client]);
-			g_hNetprops[client] = CreateKeyValues(sNetclass);
-			GetKeyValuesForNetClass(g_hNetprops[client], hSendTable, 0, sNetclass);
+		new Handle:hSendTable = GetSendTableByNetclass(sNetclass);
+		ClearKeyValues(g_hNetprops[client]);
+		g_hNetprops[client] = CreateKeyValues(sNetclass);
+		GetKeyValuesForNetClass(g_hNetprops[client], hSendTable, 0, sNetclass);
 
-			UpdateKeyValues(client, false);
-			KeyValuesToFile(g_hNetprops[client], "kvtest.txt");
-			return true;
-		}
+		UpdateKeyValues(client, false);
+		KeyValuesToFile(g_hNetprops[client], "kvtest.txt");
+		return true;
 	}
 
 	return false;
@@ -392,9 +389,7 @@ public AddEntry(Handle:hKV, const String:sName[], const String:sParent[], iOffse
 	new String:sOffset[6];
 	Format(sOffset, sizeof(sOffset), "%i", iOffset);
 
-	if(KvJumpToKey(hKV, sOffset, false)) {
-		LogMessage("Key %s already exists, skipping", sOffset);
-	} else {
+	if(!KvJumpToKey(hKV, sOffset, false)) { //Only create non existing keys, dont overwrite
 		KvJumpToKey(hKV, sOffset, true);
 		KvSetString(hKV, "parent", sParent);
 		KvSetString(hKV, "name", sName);

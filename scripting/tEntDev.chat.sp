@@ -33,20 +33,36 @@ public Cvar_ChangedEnable(Handle:convar, const String:oldValue[], const String:n
 
 public TED_OnNetpropHint(client, const String:sText[], const String:sNetprop[]) {
 	if(!g_bEnabled)return;
-	CPrintToChat(client, "%s {olive}%s", sText, sNetprop);
+	if(client == 0) {
+		PrintToServer("%s %s", sText, sNetprop);
+	} else {
+		CPrintToChat(client, "%s {olive}%s", sText, sNetprop);
+	}
 }
 
 public TED_OnInfo(client, const String:sText[]) {
 	if(!g_bEnabled)return;
-	CPrintToChat(client, "{red}%s", sText);
+	if(client == 0) {
+		PrintToServer(sText);
+	} else {
+		CPrintToChat(client, "{red}%s", sText);
+	}
 }
 
 public TED_OnCompare(client, const String:sNetprop[], const String:sOld[], const String:sNow[], iOffset) {
 	if(!g_bEnabled)return;
-	CPrintToChat(client, "{olive}%s {red}(%i){default} changed from {red}%s{default} to {red}%s", sNetprop, iOffset, sOld, sNow);
+	if(client == 0) {
+		PrintToServer("%s (%i) changed from %s to %s", sNetprop, iOffset, sOld, sNow);
+	} else {
+		CPrintToChat(client, "{olive}%s {red}(%i){default} changed from {red}%s{default} to {red}%s", sNetprop, iOffset, sOld, sNow);
+	}
 }
 
 public TED_OnShow(client, const String:sNetprop[], const String:sNow[], iOffset) {
 	if(!g_bEnabled)return;
-	CPrintToChat(client, "{olive}%s {red}(%i){default} is {red}%s", sNetprop, iOffset, sNow);
+	if(client == 0) {
+		PrintToServer("%s (%i) is %s", sNetprop, iOffset, sNow);
+	} else {
+		CPrintToChat(client, "{olive}%s {red}(%i){default} is {red}%s", sNetprop, iOffset, sNow);
+	}
 }
