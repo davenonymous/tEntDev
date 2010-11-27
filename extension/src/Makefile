@@ -1,14 +1,14 @@
 # (C)2004-2010 SourceMod Development Team
 # Makefile written by David "BAILOPAN" Anderson
 
-SMSDK = ../../forBuild/sourcemod-1-3-6
-SRCDS_BASE = ../../../srcds
-HL2SDK_ORIG = ../../forBuild/hl2sdk
-HL2SDK_OB = ../../forBuild/hl2sdk-ob
-HL2SDK_OB_VALVE = ../../forBuild/hl2sdk-ob-valve
-HL2SDK_L4D = ../../forBuild/hl2sdk-l4d
-HL2SDK_L4D2 = ../../forBuild/hl2sdk-l4d2
-MMSOURCE18 = ../../forBuild/mmsource-1-8-4
+SMSDK = 		../../forBuild/sourcemod-1-3-6
+SRCDS_BASE = 		../../../srcds
+HL2SDK_ORIG = 		../../forBuild/hl2sdk
+HL2SDK_OB = 		../../forBuild/hl2sdk-ob
+HL2SDK_OB_VALVE =	../../forBuild/hl2sdk-ob-valve
+HL2SDK_L4D = 		../../forBuild/hl2sdk-l4d
+HL2SDK_L4D2 = 		../../forBuild/hl2sdk-l4d2
+MMSOURCE18 = 		../../forBuild/mmsource-1-8-4
 
 #####################################
 ### EDIT BELOW FOR OTHER PROJECTS ###
@@ -74,7 +74,8 @@ ifeq "$(ENGINE)" "left4dead"
 	METAMOD = $(MMSOURCE18)/core
 	INCLUDE += -I$(HL2SDK)/public/game/server
 	SRCDS = $(SRCDS_BASE)/l4d
-	LIB_SUFFIX = _i486.so
+	LIB_PREFIX = lib
+	LIB_SUFFIX = .so
 	override ENGSET = true
 endif
 ifeq "$(ENGINE)" "left4dead2"
