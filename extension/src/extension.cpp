@@ -8,7 +8,7 @@
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, version 3.0, as published by the
  * Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
@@ -48,16 +48,16 @@ cell_t GetDataTable(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendProp *pProp;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pProp)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendProp handle %x (error %d)", hndl, err);
 	}
-	
-	return g_pHandleSys->CreateHandle(g_SendTableHandle, 
+
+	return g_pHandleSys->CreateHandle(g_SendTableHandle,
 		pProp->GetDataTable(),
-		pContext->GetIdentity(), 
-		myself->GetIdentity(), 
+		pContext->GetIdentity(),
+		myself->GetIdentity(),
 		NULL);
 }
 
@@ -69,12 +69,12 @@ cell_t IsInsideArray(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendProp *pProp;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pProp)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendProp handle %x (error %d)", hndl, err);
 	}
-	
+
 	return pProp->IsInsideArray();
 }
 
@@ -86,12 +86,12 @@ cell_t GetOffset(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendProp *pProp;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pProp)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendProp handle %x (error %d)", hndl, err);
 	}
-	
+
 	return pProp->GetOffset();
 }
 
@@ -103,12 +103,12 @@ cell_t GetBits(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendProp *pProp;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pProp)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendProp handle %x (error %d)", hndl, err);
 	}
-	
+
 	return pProp->m_nBits;
 }
 
@@ -120,12 +120,12 @@ cell_t GetType(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendProp *pProp;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pProp)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendProp handle %x (error %d)", hndl, err);
 	}
-	
+
 	return pProp->GetType();
 }
 
@@ -137,7 +137,7 @@ cell_t GetTypeString(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendProp *pProp;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pProp)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendProp handle %x (error %d)", hndl, err);
@@ -149,7 +149,7 @@ cell_t GetTypeString(IPluginContext *pContext, const cell_t *params) {
 		pContext->StringToLocal(params[2], params[3], sType);
 		return strlen(sType);
 	}
-	
+
 	return 0;
 }
 
@@ -179,7 +179,7 @@ cell_t GetPropName(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendProp *pProp;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pProp)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendProp handle %x (error %d)", hndl, err);
@@ -197,16 +197,16 @@ cell_t GetProp(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendTable *pTable;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pTable)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendTable handle %x (error %d)", hndl, err);
 	}
 
-	return g_pHandleSys->CreateHandle(g_SendTableHandle, 
+	return g_pHandleSys->CreateHandle(g_SendTableHandle,
 		pTable->GetProp(params[2]),
-		pContext->GetIdentity(), 
-		myself->GetIdentity(), 
+		pContext->GetIdentity(),
+		myself->GetIdentity(),
 		NULL);
 }
 
@@ -218,35 +218,13 @@ cell_t GetNumProps(IPluginContext *pContext, const cell_t *params) {
 	sec.pIdentity = myself->GetIdentity();
 
 	SendTable *pTable;
-	
+
 	if ((err=g_pHandleSys->ReadHandle(hndl, g_SendTableHandle, &sec, (void **)&pTable)) != HandleError_None)
 	{
 		return pContext->ThrowNativeError("Invalid SendTable handle %x (error %d)", hndl, err);
 	}
 
 	return pTable->GetNumProps();
-}
-
-cell_t GetSendTableByEntity(IPluginContext *pContext, const cell_t *params) {
-	edict_t *pEdict = engine->PEntityOfEntIndex(params[1]);
-	if (!pEdict || pEdict->IsFree() || !pEdict->GetNetworkable())
-	{
-		return BAD_HANDLE;
-	}
-	
-	ServerClass *sc = pEdict->GetNetworkable()->GetServerClass();
-	
-	if (sc == NULL)
-	{
-		META_CONPRINTF("Could not find server class for entity\n");
-		return BAD_HANDLE;
-	}
-
-	return g_pHandleSys->CreateHandle(g_SendTableHandle, 
-		sc->m_pTable, 
-		pContext->GetIdentity(), 
-		myself->GetIdentity(), 
-		NULL);
 }
 
 cell_t GetSendTableByNetclass(IPluginContext *pContext, const cell_t *params) {
@@ -260,10 +238,10 @@ cell_t GetSendTableByNetclass(IPluginContext *pContext, const cell_t *params) {
 		return BAD_HANDLE;
 	}
 
-	return g_pHandleSys->CreateHandle(g_SendTableHandle, 
-		sc->m_pTable, 
-		pContext->GetIdentity(), 
-		myself->GetIdentity(), 
+	return g_pHandleSys->CreateHandle(g_SendTableHandle,
+		sc->m_pTable,
+		pContext->GetIdentity(),
+		myself->GetIdentity(),
 		NULL);
 }
 
@@ -323,7 +301,7 @@ bool SMNetprops::SDK_OnLoad(char *error, size_t err_max, bool late)
 {
 	sharesys->AddNatives(myself, netprop_natives);
 	g_SendTableHandle = g_pHandleSys->CreateType("NetProp", &g_SendTableHandler, 0, NULL, NULL, myself->GetIdentity(), NULL);
-	
+
 	return true;
 }
 
@@ -336,10 +314,9 @@ void SendTableHandler::OnHandleDestroy(HandleType_t type, void *object)
 {
 }
 
-const sp_nativeinfo_t netprop_natives[] = 
-{		
+const sp_nativeinfo_t netprop_natives[] =
+{
 	{"GetSendTableByNetclass",	GetSendTableByNetclass},
-	{"GetSendTableByEntity",	GetSendTableByEntity},	
 	{"GetNumProps",	GetNumProps},
 	{"GetTableName",	GetTableName},
 	{"GetPropName",	GetPropName},
@@ -348,9 +325,9 @@ const sp_nativeinfo_t netprop_natives[] =
 	{"GetTypeString", GetTypeString},
 	{"GetType", GetType},
 	{"GetOffset", GetOffset},
-	{"GetBits", GetBits},	
+	{"GetBits", GetBits},
 	{"IsInsideArray", IsInsideArray},
-	
+
 	{NULL,			NULL}
 };
 
