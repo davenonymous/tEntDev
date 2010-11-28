@@ -2,7 +2,7 @@
 #include <sourcemod>
 #include <colors>
 
-#define VERSION 		"0.0.1"
+#define VERSION 		"0.1.0"
 
 new bool:g_bLog[MAXPLAYERS+1];
 new String:g_sPath[PLATFORM_MAX_PATH];

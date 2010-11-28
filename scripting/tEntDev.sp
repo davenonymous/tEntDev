@@ -92,7 +92,11 @@ public Native_SetNetprop(Handle:hPlugin, iNumParams) {
 				if(iOffset > 0) {
 					if(iType == DPT_Int) {
 						new iValue = StringToInt(sValue);
-						PrintToChat(client, "Setting %s->%s to %i (%i)", sParent, sNetProp, iValue, iType);
+						if(client != 0) {
+							PrintToChat(client, "Setting %s->%s to %i (%i)", sParent, sNetProp, iValue, iType);
+						} else {
+							PrintToServer("Setting %s->%s to %i (%i)", sParent, sNetProp, iValue, iType);
+						}
 						SetEntData(iEntity, iOffset, iValue, iByte, true);
 						bSuccess = true;
 					}
@@ -106,7 +110,11 @@ public Native_SetNetprop(Handle:hPlugin, iNumParams) {
 
 					if(iType == DPT_Float) {
 						new Float:fValue = StringToFloat(sValue);
-						PrintToChat(client, "Setting %s->%s to %.2f (%i)", sParent, sNetProp, fValue, iType);
+						if(client != 0) {
+							PrintToChat(client, "Setting %s->%s to %.2f (%i)", sParent, sNetProp, fValue, iType);
+						} else {
+							PrintToServer("Setting %s->%s to %.2f (%i)", sParent, sNetProp, fValue, iType);
+						}
 						SetEntData(iEntity, iOffset, fValue, true);
 						bSuccess = true;
 					}
@@ -197,11 +205,13 @@ public Native_SelectEntity(Handle:hPlugin, iNumParams) {
 
 	decl String:sNetclass[64];
 	if(GetEntityNetClass(iEnt, sNetclass, sizeof(sNetclass))) {
+		LogMessage("Marked: %s", sNetclass);
 		Call_StartForward(g_hForwardNetpropMessage);
 		Call_PushCell(client);
 		Call_PushString("You've marked:");
 		Call_PushString(sNetclass);
 		Call_Finish();
+
 
 		g_iMarkedEntity[client] = iEnt;
 
