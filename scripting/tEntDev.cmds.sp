@@ -28,6 +28,12 @@ public OnPluginStart() {
 	RegAdminCmd("sm_ted_compare", Command_CompareNetprops, ADMFLAG_ROOT);
 }
 
+public OnAllPluginsLoaded() {
+	if (!LibraryExists("ted")) {
+		SetFailState("tEntDev plugin not loaded!");
+	}
+}
+
 public Action:Command_SetNetprop(client,args) {
 	if(args == 2) {
 		new String:sNetProp[32];

@@ -17,6 +17,12 @@ public OnPluginStart() {
 	CreateConVar("sm_tentdev_chat_version", VERSION, "", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 }
 
+public OnAllPluginsLoaded() {
+	if (!LibraryExists("ted")) {
+		SetFailState("tEntDev plugin not loaded!");
+	}
+}
+
 public TED_OnNetpropHint(client, const String:sText[], const String:sNetprop[]) {
 	if(client == 0) {
 		PrintToServer("%s %s", sText, sNetprop);

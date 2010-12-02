@@ -22,6 +22,12 @@ public OnPluginStart() {
 	RegAdminCmd("sm_ted_spawnhook", Command_SpawnHookEntity, ADMFLAG_ROOT);
 }
 
+public OnAllPluginsLoaded() {
+	if (!LibraryExists("ted")) {
+		SetFailState("tEntDev plugin not loaded!");
+	}
+}
+
 public OnPlayerDisconnect(client) {
 	strcopy(g_sHookClass[client], 127, "");
 }

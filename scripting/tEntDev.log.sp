@@ -23,6 +23,12 @@ public OnPluginStart() {
 	RegAdminCmd("sm_ted_log", Command_SetLog, ADMFLAG_ROOT);
 }
 
+public OnAllPluginsLoaded() {
+	if (!LibraryExists("ted")) {
+		SetFailState("tEntDev plugin not loaded!");
+	}
+}
+
 public OnClientDisconnect(client) {
 	g_bLog[client] = false;
 	CloseFile(client);

@@ -19,6 +19,12 @@ public OnPluginStart() {
 	RegAdminCmd("sm_ted_selectid", Command_SelectEntityByID, ADMFLAG_ROOT);
 }
 
+public OnAllPluginsLoaded() {
+	if (!LibraryExists("ted")) {
+		SetFailState("tEntDev plugin not loaded!");
+	}
+}
+
 public Action:Command_SelectEntityByID(client,args) {
 	if(args == 1) {
 		new String:sEnt[32];
