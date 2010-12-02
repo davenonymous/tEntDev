@@ -1,3 +1,8 @@
+#if defined _netprops_included_
+	#endinput
+#endif
+#define _netprops_included_
+
 enum SendPropType {
 	DPT_Int=0,
 	DPT_Float,
@@ -20,4 +25,4 @@ native SendPropType:GetType(Handle:hProp);
 native GetTypeString(Handle:hProp, String:sType[], size);
 native GetBits(Handle:hProp);
 native GetOffset(Handle:hProp);
-//native bool:IsInsideArray(Handle:hProp);
+
