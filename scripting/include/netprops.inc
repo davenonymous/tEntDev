@@ -26,3 +26,23 @@ native GetTypeString(Handle:hProp, String:sType[], size);
 native GetBits(Handle:hProp);
 native GetOffset(Handle:hProp);
 
+
+
+/**
+ * Do not edit below this line!
+ */
+public Extension:__ext_netprops =
+{
+	name = "Netprops",
+	file = "netprops.ext",
+#if defined AUTOLOAD_EXTENSIONS
+	autoload = 1,
+#else
+	autoload = 0,
+#endif
+#if defined REQUIRE_EXTENSIONS
+	required = 1,
+#else
+	required = 0,
+#endif
+};
