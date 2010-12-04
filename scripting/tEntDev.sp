@@ -11,11 +11,18 @@ new Handle:g_hIgnoreNetProps[MAXPLAYERS+1] = {INVALID_HANDLE, ...};
 new g_iMarkedEntity[MAXPLAYERS+1] = {-1,...};
 new bool:g_bStopWatching[MAXPLAYERS+1] = {true, ...};
 
+new String:g_sSeparator[40];
+new Float:g_fWatchTimerInterval;
+
 //Forwards
 new Handle:g_hForwardCompareMessage;
 new Handle:g_hForwardShowMessage;
 new Handle:g_hForwardInfoMessage;
 new Handle:g_hForwardNetpropMessage;
+
+//Cvars
+new Handle:g_hCvarSeparator = INVALID_HANDLE;
+new Handle:g_hCvarWatchTimerInterval = INVALID_HANDLE;
 
 public Plugin:myinfo =
 {
@@ -32,6 +39,21 @@ public OnPluginStart() {
 	g_hForwardShowMessage = CreateGlobalForward("TED_OnShow", ET_Ignore, Param_Cell, Param_String, Param_String, Param_Cell);
 	g_hForwardInfoMessage = CreateGlobalForward("TED_OnInfo", ET_Ignore, Param_Cell, Param_String);
 	g_hForwardNetpropMessage = CreateGlobalForward("TED_OnNetpropHint", ET_Ignore, Param_Cell, Param_String, Param_String);
+
+	g_hCvarSeparator = CreateConVar("sm_tentdev_separator", "------------------------------", "Separator between watch steps", FCVAR_PLUGIN);
+	g_hCvarWatchTimerInterval = CreateConVar("sm_tentdev_watchinterval", "1.0", "Interval between watch steps", FCVAR_PLUGIN);
+
+	HookConVarChange(g_hCvarSeparator, Cvar_Changed);
+	HookConVarChange(g_hCvarWatchTimerInterval, Cvar_Changed);
+}
+
+public OnConfigsExecuted() {
+	GetConVarString(g_hCvarSeparator, g_sSeparator, sizeof(g_sSeparator));
+	g_fWatchTimerInterval = GetConVarFloat(g_hCvarWatchTimerInterval);
+}
+
+public Cvar_Changed(Handle:convar, const String:oldValue[], const String:newValue[]) {
+	OnConfigsExecuted();
 }
 
 public OnPlayerDisconnect(client) {
@@ -40,7 +62,6 @@ public OnPlayerDisconnect(client) {
 	ClearKeyValues(g_hIgnoreNetProps[client]);
 	ClearKeyValues(g_hNetprops[client]);
 }
-
 
 public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max) {
 	RegPluginLibrary("ted");
@@ -179,7 +200,7 @@ public Native_WatchNetprops(Handle:hPlugin, iNumParams) {
 	UpdateKeyValues(client);
 
 	g_bStopWatching[client] = false;
-	CreateTimer(1.0, Timer_WatchEntity, client, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(g_fWatchTimerInterval, Timer_WatchEntity, client, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	return true;
 }
 
@@ -286,8 +307,17 @@ public ClearKeyValues(&Handle:hKV) {
 
 }
 
+ShowSeparator(client) {
+	Call_StartForward(g_hForwardInfoMessage);
+	Call_PushCell(client);
+	Call_PushString(g_sSeparator);
+	Call_Finish();
+}
+
 UpdateKeyValues(client, bool:bShowChanges = false, bool:bShowAll = false) {
 	new iEntity = g_iMarkedEntity[client];
+
+	new bSeparatorShown = false;
 
 	if(KvGotoFirstSubKey(g_hNetprops[client], false)) {
         do {
@@ -334,6 +364,11 @@ UpdateKeyValues(client, bool:bShowChanges = false, bool:bShowAll = false) {
 				}
 				if(bIgnore)continue;
 
+				if((bShowChanges || bShowAll) && !bSeparatorShown) {
+					ShowSeparator(client);
+					bSeparatorShown = true;
+				}
+
 				Call_StartForward(g_hForwardCompareMessage);
 				Call_PushCell(client);
 				Call_PushString(sLongName);
@@ -346,6 +381,11 @@ UpdateKeyValues(client, bool:bShowChanges = false, bool:bShowAll = false) {
 			}
 
 			if(bShowAll) {
+				if((bShowChanges || bShowAll) && !bSeparatorShown) {
+					ShowSeparator(client);
+					bSeparatorShown = true;
+				}
+
 				Call_StartForward(g_hForwardShowMessage);
 				Call_PushCell(client);
 				Call_PushString(sLongName);
@@ -361,6 +401,7 @@ UpdateKeyValues(client, bool:bShowChanges = false, bool:bShowAll = false) {
         } while (KvGotoNextKey(g_hNetprops[client], false));
         KvGoBack(g_hNetprops[client]);
     }
+
 }
 
 public GetKeyValuesForNetClass(Handle:hKV, Handle:hSendTable, iOffsetRecursive, const String:sParent[]) {
