@@ -3,8 +3,6 @@
 #include <colors>
 #include <tentdev>
 
-#define VERSION 		"0.1.0"
-
 public Plugin:myinfo =
 {
 	name 		= "tEntDev - Chat",

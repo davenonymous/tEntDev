@@ -3,8 +3,6 @@
 #include <tentdev>
 #include <sdkhooks>
 
-#define VERSION 		"0.1.0"
-
 new String:g_sHookClass[MAXPLAYERS+1][127];
 new bool:g_bStartWatching[MAXPLAYERS+1];
 

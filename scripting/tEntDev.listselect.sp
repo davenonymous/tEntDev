@@ -2,8 +2,6 @@
 #include <sourcemod>
 #include <tentdev>
 
-#define VERSION 		"0.1.0"
-
 public Plugin:myinfo =
 {
 	name 		= "tEntDev - List select",
@@ -58,7 +56,7 @@ public Action:Command_ListEntities(client,args) {
 				GetEdictClassname(iEnt, sName, sizeof(sName));
 			}
 
-			Format(sResult, sizeof(sResult), "%5i %20s %s", iEnt, sNetclass, sName);
+			Format(sResult, sizeof(sResult), "%5i %30s %s", iEnt, sNetclass, sName);
 			ReplyToCommand(client, sResult);
 		}
 

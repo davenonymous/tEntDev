@@ -1,9 +1,7 @@
 #pragma semicolon 1
 #include <sourcemod>
 #include <netprops>
-
-#define VERSION 		"0.1.0"
-
+#include <tentdev>
 
 new Handle:g_hNetprops[MAXPLAYERS+1] = {INVALID_HANDLE, ...};
 new Handle:g_hIgnoreNetProps[MAXPLAYERS+1] = {INVALID_HANDLE, ...};

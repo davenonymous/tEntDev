@@ -3,6 +3,9 @@
 #endif
 #define _ted_included_
 
+#define VERSION 		"0.1.1"
+
+
 /**
  * Sets the value of a netprop.
  *
