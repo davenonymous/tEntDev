@@ -33,7 +33,7 @@ public Plugin:myinfo =
 };
 
 public OnPluginStart() {
-	CreateConVar("sm_tentdev_core_version", VERSION, "", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
+	CreateConVar("sm_tentdev_version", VERSION, "", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 
 	g_hForwardCompareMessage = CreateGlobalForward("TED_OnCompare", ET_Ignore, Param_Cell, Param_String, Param_String, Param_String, Param_Cell);
 	g_hForwardShowMessage = CreateGlobalForward("TED_OnShow", ET_Ignore, Param_Cell, Param_String, Param_String, Param_Cell);
