@@ -359,6 +359,7 @@ UpdateKeyValues(client, bool:bShowChanges = false, bool:bShowAll = false) {
 				new bool:bIgnore = false;
 				if(g_hIgnoreNetProps[client] != INVALID_HANDLE) {
 					GetTrieValue(g_hIgnoreNetProps[client], sName, bIgnore);
+					GetTrieValue(g_hIgnoreNetProps[client], sLongName, bIgnore);
 				}
 				if(bIgnore)continue;
 
