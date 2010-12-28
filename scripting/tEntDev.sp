@@ -67,6 +67,7 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max) 
 	CreateNative("TED_IgnoreNetprop", Native_IgnoreNetprop);
 	CreateNative("TED_UnignoreNetprop", Native_UnignoreNetprop);
 	CreateNative("TED_SelectEntity", Native_SelectEntity);
+	CreateNative("TED_GetSelectedEntity", Native_GetSelectedEntity);
 	CreateNative("TED_ShowNetprops", Native_ShowNetprops);
 	CreateNative("TED_WatchNetprops", Native_WatchNetprops);
 	CreateNative("TED_StopWatchNetprops", Native_StopWatchNetprops);
@@ -214,6 +215,14 @@ public Action:Timer_WatchEntity(Handle:timer, any:client) {
 public Native_StopWatchNetprops(Handle:hPlugin, iNumParams) {
 	new client = GetNativeCell(1);
 	g_bStopWatching[client] = true;
+}
+
+public Native_GetSelectedEntity(Handle:hPlugin, iNumParams) {
+	new client = GetNativeCell(1);
+
+	if(!CheckClientSelection(client))return -1;
+
+	return g_iMarkedEntity[client];
 }
 
 public Native_SelectEntity(Handle:hPlugin, iNumParams) {

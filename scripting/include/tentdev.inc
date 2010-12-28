@@ -26,6 +26,14 @@ native TED_SetNetprop(client, const String:sNetprop[], const String:sValue[]);
 native TED_SelectEntity(client, entity);
 
 /**
+ * Gets the selected entity for a client.
+ *
+ * @param client		Client whose selected entity index should be returned
+ * @return              Entity index.
+ */
+native TED_GetSelectedEntity(client);
+
+/**
  * Adds a netprop to the ignore list of a specific client.
  * The client is being notified through TED_OnNetpropHint().
  *
