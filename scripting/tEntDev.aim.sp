@@ -12,6 +12,12 @@ public Plugin:myinfo =
 };
 
 public OnPluginStart() {
+	decl String:sGamedir[PLATFORM_MAX_PATH];
+	GetGameFolderName(sGamedir, sizeof(sGamedir));
+	if(strcmp(sGamedir, "swarm") == 0) {
+		SetFailState("This plugin is not for Alien Swarm");
+	}
+
 	CreateConVar("sm_tentdev_aim_version", VERSION, "", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 
 	RegAdminCmd("sm_ted_select", Command_MarkEntity, ADMFLAG_ROOT);
